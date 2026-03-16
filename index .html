@@ -1,0 +1,1034 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ヘルスレポートサンプル | health.me</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Noto+Serif+JP:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:    #f8f6f1;
+  --bg2:   #f0ece4;
+  --white: #ffffff;
+  --ink:   #1c1c1c;
+  --ink2:  #484848;
+  --ink3:  #909090;
+  --teal:  #2c7a6f;
+  --teal-d:#205a52;
+  --teal-l:#e5f3f1;
+  --teal-m:#3a9a8c;
+  --gold:  #c8923a;
+  --gold-l:#fdf4e7;
+  --border:#e0dbd2;
+  --red:   #c0392b;
+  --red-l: #fdf0ee;
+}
+html{scroll-behavior:smooth}
+body{
+  font-family:"Noto Sans JP",sans-serif;
+  background:var(--bg);color:var(--ink);
+  font-size:15px;line-height:1.85;
+  max-width:680px;margin:0 auto;
+}
+
+/* ── TYPE ── */
+.eyebrow{
+  font-size:11px;font-weight:700;letter-spacing:2px;
+  text-transform:uppercase;color:var(--teal);
+  margin-bottom:8px;
+}
+h2{
+  font-family:"Noto Serif JP",serif;
+  font-size:clamp(18px,3.5vw,24px);
+  font-weight:400;line-height:1.45;
+  color:var(--ink);margin-bottom:14px;
+}
+.lead{font-size:15px;color:var(--ink2);line-height:1.9;margin-bottom:10px}
+.sm{font-size:13px;color:var(--ink2);line-height:1.85;margin-bottom:8px}
+strong{font-weight:700;color:var(--ink)}
+
+/* ── LAYOUT ── */
+.pad{padding:32px 24px}
+.pad-sm{padding:20px 24px}
+.bg-w{background:var(--white)}
+.bg-bg{background:var(--bg)}
+.bg-bg2{background:var(--bg2)}
+.divider{height:1px;background:var(--border);margin:0 24px}
+
+/* ── TABS ── */
+.tabs{
+  display:flex;
+  border-bottom:1px solid var(--border);
+  background:var(--white);
+  position:sticky;top:0;z-index:100;
+  overflow-x:auto;
+  scrollbar-width:none;
+}
+.tabs::-webkit-scrollbar{display:none}
+.tab{
+  flex:1;min-width:72px;
+  padding:14px 8px;
+  font-size:12px;font-weight:500;
+  color:var(--ink3);
+  border:none;background:none;
+  cursor:pointer;
+  border-bottom:2px solid transparent;
+  white-space:nowrap;
+  font-family:"Noto Sans JP",sans-serif;
+  transition:color .18s,border-color .18s;
+}
+.tab:hover{color:var(--ink2)}
+.tab.active{color:var(--teal);border-bottom-color:var(--teal);font-weight:700}
+
+/* ── PANELS ── */
+.panel{display:none}
+.panel.active{display:block;animation:fadeIn .3s ease both}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+/* ── REPORT HEADER ── */
+.report-head{
+  padding:28px 24px 24px;
+  background:var(--white);
+  border-bottom:1px solid var(--border);
+}
+.sample-tag{
+  display:inline-block;
+  background:var(--gold-l);color:var(--gold);
+  border:1px solid rgba(200,146,58,.25);
+  border-radius:100px;padding:4px 12px;
+  font-size:11px;font-weight:700;letter-spacing:.3px;
+  margin-bottom:12px;
+}
+.report-head h1{
+  font-family:"Noto Serif JP",serif;
+  font-size:clamp(20px,4vw,28px);
+  font-weight:400;color:var(--ink);
+  margin-bottom:6px;line-height:1.4;
+}
+.report-head-meta{
+  font-size:12px;color:var(--ink3);
+  display:flex;flex-wrap:wrap;gap:12px;
+  margin-bottom:16px;
+}
+.report-head-meta span{display:flex;align-items:center;gap:5px}
+.report-head-meta span::before{
+  content:'';width:4px;height:4px;border-radius:50%;
+  background:var(--teal);display:inline-block;flex-shrink:0;
+}
+/* overall badge */
+.overall-row{
+  display:flex;align-items:center;gap:12px;
+  padding:14px 16px;
+  background:var(--teal-l);border-radius:10px;
+}
+.overall-label{font-size:12px;color:var(--teal);font-weight:700;flex:1}
+.overall-grade{
+  font-family:"Noto Serif JP",serif;
+  font-size:36px;font-weight:600;color:var(--teal);line-height:1;
+}
+.overall-sub{font-size:11px;color:var(--teal);margin-top:2px}
+
+/* ── METRIC CARDS ── */
+.metric-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:10px;margin:16px 0;
+}
+.metric-card{
+  background:var(--white);
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:14px 16px;
+  border-top:3px solid var(--teal);
+  transition:box-shadow .18s;
+}
+.metric-card:hover{box-shadow:0 4px 16px rgba(0,0,0,.07)}
+.metric-card.gold{border-top-color:var(--gold)}
+.metric-card.red{border-top-color:var(--red)}
+.metric-label{font-size:11px;color:var(--ink3);margin-bottom:6px}
+.metric-val{
+  font-size:22px;font-weight:700;color:var(--ink);
+  line-height:1;margin-bottom:4px;
+}
+.metric-val span{font-size:13px;font-weight:400;color:var(--ink3)}
+.metric-change{font-size:11px;display:flex;align-items:center;gap:3px}
+.metric-change.pos{color:var(--teal)}
+.metric-change.neg{color:var(--red)}
+.metric-change.neu{color:var(--ink3)}
+
+/* ── INSIGHT BOX ── */
+.insight{
+  border-left:3px solid var(--teal);
+  background:var(--teal-l);
+  border-radius:0 8px 8px 0;
+  padding:14px 16px;
+  margin-bottom:14px;
+  font-size:14px;color:var(--ink2);line-height:1.8;
+}
+.insight.gold{border-left-color:var(--gold);background:var(--gold-l)}
+.insight.red{border-left-color:var(--red);background:var(--red-l)}
+
+/* ── STEP LIST (timeline) ── */
+.step-list{margin-top:4px}
+.step-item{
+  padding:18px 0;
+  border-bottom:1px solid var(--border);
+}
+.step-item:first-child{border-top:1px solid var(--border)}
+.step-num{font-size:11px;color:var(--teal);font-weight:700;letter-spacing:1px;margin-bottom:4px}
+.step-title{font-size:16px;font-weight:700;color:var(--ink);margin-bottom:6px}
+.step-body{font-size:13px;color:var(--ink2);line-height:1.85}
+.step-item.warn .step-num{color:var(--gold)}
+.step-item.warn .step-title{color:var(--gold)}
+.step-item.peak .step-num{color:var(--teal-d)}
+
+/* ── TABLE ── */
+.data-table-wrap{
+  overflow:hidden;
+  border-radius:10px;
+  border:1px solid var(--border);
+  margin:16px 0;
+}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{
+  padding:10px 12px;
+  background:var(--bg2);
+  color:var(--ink3);font-weight:700;
+  font-size:11px;letter-spacing:.5px;
+  text-align:left;border-bottom:1px solid var(--border);
+  white-space:nowrap;
+}
+td{
+  padding:11px 12px;
+  border-bottom:1px solid var(--border);
+  color:var(--ink2);vertical-align:middle;
+}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:var(--bg)}
+.td-val{color:var(--ink);font-weight:600}
+.td-warn{color:var(--gold);font-weight:600}
+.td-red{color:var(--red);font-weight:600}
+.td-ok{color:var(--teal);font-weight:600}
+
+/* ── PILL ── */
+.pill{
+  display:inline-block;padding:3px 9px;
+  border-radius:100px;font-size:11px;font-weight:700;
+  white-space:nowrap;
+}
+.pill-ok{background:var(--teal-l);color:var(--teal)}
+.pill-gold{background:var(--gold-l);color:var(--gold)}
+.pill-red{background:var(--red-l);color:var(--red)}
+.pill-gray{background:var(--bg2);color:var(--ink3)}
+
+/* ── CLIST (card list like LP) ── */
+.clist{list-style:none;margin-top:12px;display:flex;flex-direction:column;gap:8px}
+.clist li{
+  background:var(--white);
+  border:1.5px solid var(--ink);
+  border-radius:6px;
+  padding:12px 16px;
+  font-size:14px;font-weight:500;color:var(--ink);
+  display:flex;align-items:center;gap:10px;
+}
+.clist li::before{content:"→";color:var(--teal);font-size:13px;flex-shrink:0}
+
+/* ── PROGRESS BAR ── */
+.prog-row{margin-bottom:14px}
+.prog-label{
+  display:flex;justify-content:space-between;
+  align-items:baseline;margin-bottom:6px;
+}
+.prog-name{font-size:13px;font-weight:500;color:var(--ink)}
+.prog-val{font-size:12px;color:var(--ink3)}
+.prog-track{
+  height:5px;background:var(--border);
+  border-radius:100px;overflow:hidden;
+}
+.prog-fill{
+  height:100%;border-radius:100px;
+  background:var(--teal);
+  transition:width 1s cubic-bezier(.34,1.56,.64,1);
+}
+.prog-fill.gold{background:var(--gold)}
+.prog-fill.red{background:var(--red)}
+
+/* ── ADVICE CARD ── */
+.adv-item{
+  padding:18px 0;
+  border-bottom:1px solid var(--border);
+}
+.adv-item:first-child{border-top:1px solid var(--border)}
+.adv-priority{
+  font-size:11px;font-weight:700;letter-spacing:1px;
+  color:var(--teal);margin-bottom:4px;
+}
+.adv-priority.p1{color:var(--red)}
+.adv-priority.p2{color:var(--gold)}
+.adv-title{font-size:16px;font-weight:700;color:var(--ink);margin-bottom:6px}
+.adv-body{font-size:13px;color:var(--ink2);line-height:1.85}
+
+/* ── GOAL TABLE ── */
+.goal-row{
+  display:flex;align-items:center;
+  padding:14px 0;
+  border-bottom:1px solid var(--border);
+  gap:12px;
+}
+.goal-row:first-child{border-top:1px solid var(--border)}
+.goal-name{font-size:13px;font-weight:500;color:var(--ink);min-width:96px;flex-shrink:0}
+.goal-bars{flex:1}
+.goal-bar-wrap{
+  position:relative;height:4px;
+  background:var(--border);border-radius:100px;
+  margin-bottom:5px;
+}
+.goal-bar-now{
+  position:absolute;left:0;top:0;height:100%;
+  background:var(--ink3);border-radius:100px;
+}
+.goal-bar-3m{
+  position:absolute;left:0;top:0;height:100%;
+  background:var(--gold);border-radius:100px;opacity:.6;
+}
+.goal-bar-6m{
+  position:absolute;left:0;top:0;height:100%;
+  background:var(--teal);border-radius:100px;opacity:.7;
+}
+.goal-legend{display:flex;gap:10px;flex-wrap:wrap}
+.goal-legend span{font-size:10px;color:var(--ink3);display:flex;align-items:center;gap:4px}
+.dot-now{width:7px;height:7px;border-radius:50%;background:var(--ink3);flex-shrink:0}
+.dot-3m{width:7px;height:7px;border-radius:50%;background:var(--gold);flex-shrink:0}
+.dot-6m{width:7px;height:7px;border-radius:50%;background:var(--teal);flex-shrink:0}
+.goal-vals{font-size:11px;color:var(--ink3);text-align:right;min-width:80px;flex-shrink:0;line-height:1.6}
+
+/* ── SVG CHARTS ── */
+.chart-wrap{
+  background:var(--white);
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:20px 20px 14px;
+  margin:16px 0;
+}
+.chart-title{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:2px}
+.chart-sub{font-size:11px;color:var(--ink3);margin-bottom:16px}
+svg.chart{width:100%;overflow:visible;display:block}
+
+/* ── MONTHLY TABLE highlight ── */
+tr.peak td{background:var(--teal-l)}
+tr.peak .td-val{color:var(--teal-d)}
+
+/* ── FOOTER NOTE ── */
+.foot-note{
+  padding:20px 24px;
+  font-size:11px;color:var(--ink3);line-height:1.8;
+  border-top:1px solid var(--border);
+  text-align:center;
+}
+
+@media(max-width:400px){
+  .metric-grid{grid-template-columns:1fr 1fr}
+  .metric-val{font-size:19px}
+}
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════
+     REPORT HEADER
+══════════════════════════════════ -->
+<div class="report-head">
+  <div class="sample-tag">サンプルレポート</div>
+  <h1>ヘルスパフォーマンスレポート</h1>
+  <div class="report-head-meta">
+    <span>F.K. 様（42歳・男性）</span>
+    <span>観察期間：6ヶ月（231日）</span>
+    <span>2025年1〜7月</span>
+  </div>
+  <div class="overall-row">
+    <div>
+      <div class="overall-label">総合評価</div>
+      <div class="overall-sub">6ヶ月間の改善実績</div>
+    </div>
+    <div style="text-align:right">
+      <div class="overall-grade">A</div>
+      <div style="font-size:11px;color:var(--teal)">非常に良好</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     TABS
+══════════════════════════════════ -->
+<div class="tabs">
+  <button class="tab active" onclick="sw('summary',this)">サマリー</button>
+  <button class="tab" onclick="sw('trend',this)">トレンド</button>
+  <button class="tab" onclick="sw('blood',this)">血液・栄養</button>
+  <button class="tab" onclick="sw('food',this)">食事分析</button>
+  <button class="tab" onclick="sw('advice',this)">アドバイス</button>
+</div>
+
+<!-- ══════════════════════════════════
+     PANEL 1: SUMMARY
+══════════════════════════════════ -->
+<div class="panel active" id="panel-summary">
+
+  <div class="pad bg-bg">
+    <p class="eyebrow">6ヶ月の変化</p>
+    <h2>主要指標のビフォー・アフター</h2>
+
+    <div class="metric-grid">
+      <div class="metric-card">
+        <div class="metric-label">体重</div>
+        <div class="metric-val">58.6<span>kg</span></div>
+        <div class="metric-change pos">▼ −3.3kg（開始時61.9）</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">体脂肪率</div>
+        <div class="metric-val">10.8<span>%</span></div>
+        <div class="metric-change pos">▼ −1.1%（筋量維持）</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">VO2 max</div>
+        <div class="metric-val">43.9</div>
+        <div class="metric-change pos">▲ +4.0（開始時39.8）</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">平均歩数</div>
+        <div class="metric-val">10.2<span>k</span></div>
+        <div class="metric-change pos">▲ +22%（目標達成）</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">HbA1c</div>
+        <div class="metric-val">5.0<span>%</span></div>
+        <div class="metric-change neu">→ 優秀水準を維持</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">血糖TIR</div>
+        <div class="metric-val">100<span>%</span></div>
+        <div class="metric-change pos">▲ 目標範囲内　完璧</div>
+      </div>
+      <div class="metric-card gold">
+        <div class="metric-label">安静時心拍</div>
+        <div class="metric-val">58.4<span>bpm</span></div>
+        <div class="metric-change neg">▲ +3bpm（要改善）</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">カフェイン</div>
+        <div class="metric-val" style="font-size:18px">ゼロ</div>
+        <div class="metric-change pos">✓ 5月〜完全断ち成功</div>
+      </div>
+    </div>
+
+    <div class="insight">
+      <strong>6ヶ月の総評：</strong>体重−3.3kgを筋量を維持しながら達成。VO2 maxは+4ポイント向上し「平均」から「良好」ゾーンへ移行中。血糖コントロールは終始完璧水準。カフェイン断ちも成功し、代謝改善が数値に現れています。
+    </div>
+    <div class="insight gold">
+      <strong>改善ポイント：</strong>マグネシウムが基準値を下回り、安静時心拍がやや上昇傾向。回復管理の強化が次のステージへの鍵です。
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="pad bg-w">
+    <p class="eyebrow">6領域スコア</p>
+    <h2>現在地の可視化</h2>
+    <div id="progress-bars"></div>
+  </div>
+
+</div>
+
+<!-- ══════════════════════════════════
+     PANEL 2: TREND
+══════════════════════════════════ -->
+<div class="panel" id="panel-trend">
+
+  <div class="pad bg-bg">
+    <p class="eyebrow">心肺機能</p>
+    <h2>VO2 max の推移</h2>
+    <div class="chart-wrap">
+      <div class="chart-title">VO2 max（最大酸素摂取量）</div>
+      <div class="chart-sub">mL/min·kg ／ 点線は目標値（45）</div>
+      <svg class="chart" viewBox="0 0 640 180" id="vo2-svg"></svg>
+    </div>
+    <div class="insight">
+      6月にサイクリングを月8回取り入れたことで<strong>43.85（最高値）</strong>を記録。次の目標は45到達。
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="pad bg-w">
+    <p class="eyebrow">体組成</p>
+    <h2>体重の推移</h2>
+    <div class="chart-wrap">
+      <div class="chart-title">体重（kg）</div>
+      <div class="chart-sub">6ヶ月で−3.3kgを達成</div>
+      <svg class="chart" viewBox="0 0 640 160" id="wt-svg"></svg>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="pad bg-bg">
+    <p class="eyebrow">月次データ</p>
+    <h2>6ヶ月サマリーテーブル</h2>
+    <div class="data-table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>月</th><th>歩数</th><th>HRV</th><th>VO2</th><th>体重</th><th>カフェイン</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>1月</td><td class="td-val">8,390</td><td>58ms</td><td>40.2</td><td>61.7kg</td><td><span class="pill pill-gold">月5日</span></td></tr>
+          <tr><td>2月</td><td class="td-val">7,948</td><td>62ms</td><td>40.6</td><td>61.7kg</td><td><span class="pill pill-gold">月12日</span></td></tr>
+          <tr><td>3月</td><td class="td-val">8,533</td><td>60ms</td><td>41.5</td><td>60.7kg</td><td><span class="pill pill-gold">月13日</span></td></tr>
+          <tr><td>4月</td><td class="td-val">9,464</td><td class="td-warn">55ms↓</td><td>41.5</td><td>59.9kg</td><td><span class="pill pill-gold">月17日</span></td></tr>
+          <tr><td>5月</td><td class="td-val">9,600</td><td>62ms</td><td>41.0</td><td>58.9kg</td><td><span class="pill pill-ok">ゼロ ✓</span></td></tr>
+          <tr class="peak"><td><strong>6月 ★</strong></td><td class="td-ok">11,543</td><td>59ms</td><td class="td-ok"><strong>42.6★</strong></td><td>58.9kg</td><td><span class="pill pill-ok">ゼロ ✓</span></td></tr>
+          <tr><td>7月</td><td class="td-val">10,220</td><td>59ms</td><td>41.7</td><td>58.6kg</td><td><span class="pill pill-ok">ゼロ ✓</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="pad bg-w">
+    <p class="eyebrow">変化の背景</p>
+    <h2>各月のポイント</h2>
+    <div class="step-list">
+      <div class="step-item">
+        <div class="step-num">1〜2月</div>
+        <div class="step-title">プログラム開始・土台づくり</div>
+        <p class="step-body">筋トレ中心の運動習慣を確立。体重・体脂肪は横ばいだが、継続するための習慣形成の段階。</p>
+      </div>
+      <div class="step-item">
+        <div class="step-num">3月</div>
+        <div class="step-title">有酸素運動の追加・体重下降開始</div>
+        <p class="step-body">ウォーキング・サイクリングを追加。体重が60kg台へ下降開始。VO2 maxが41.5に上昇。</p>
+      </div>
+      <div class="step-item warn">
+        <div class="step-num">4月　⚠ 注意</div>
+        <div class="step-title">疲労蓄積・HRV低下</div>
+        <p class="step-body">3月の運動量増加の疲労が翌月に表出。HRV低下・安静時心拍上昇。回復管理の重要性が浮き彫りに。</p>
+      </div>
+      <div class="step-item">
+        <div class="step-num">5月</div>
+        <div class="step-title">カフェイン断ち成功・体重定着</div>
+        <p class="step-body">カフェイン断ちを完遂。体重が58kg台へ定着。カフェイン断ちのタイミングと体重変化が一致。</p>
+      </div>
+      <div class="step-item peak">
+        <div class="step-num">6月　★ PEAK</div>
+        <div class="step-title">過去最高値を記録</div>
+        <p class="step-body">サイクリング月8回投入。VO2 max 43.85・歩数11,543歩/日を同時達成。6ヶ月で最高のパフォーマンス。</p>
+      </div>
+      <div class="step-item">
+        <div class="step-num">7月</div>
+        <div class="step-title">体脂肪率最低値・安定期へ</div>
+        <p class="step-body">体脂肪率10.8%と最低値を更新。次の目標はVO2 max 45到達に向けて有酸素運動を維持。</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ══════════════════════════════════
+     PANEL 3: BLOOD
+══════════════════════════════════ -->
+<div class="panel" id="panel-blood">
+
+  <div class="pad bg-bg">
+    <p class="eyebrow">血液検査（2025年1月）</p>
+    <h2>主要マーカーの結果</h2>
+    <div class="data-table-wrap">
+      <table>
+        <thead><tr><th>検査項目</th><th>値</th><th>基準値</th><th>判定</th></tr></thead>
+        <tbody>
+          <tr><td>グルコース</td><td class="td-val">93 mg/dL</td><td style="font-size:11px;color:var(--ink3)">70-109</td><td><span class="pill pill-ok">正常</span></td></tr>
+          <tr><td>HbA1c</td><td class="td-val">5.0%</td><td style="font-size:11px;color:var(--ink3)">4.6-6.2%</td><td><span class="pill pill-ok">良好</span></td></tr>
+          <tr><td>HDLコレステロール</td><td class="td-val">111 mg/dL</td><td style="font-size:11px;color:var(--ink3)">40-85</td><td><span class="pill pill-ok">高値良好</span></td></tr>
+          <tr><td>総コレステロール</td><td class="td-warn">228 mg/dL</td><td style="font-size:11px;color:var(--ink3)">120-219</td><td><span class="pill pill-gold">HDL起因</span></td></tr>
+          <tr><td>CRP（炎症）</td><td class="td-val">0.21 mg/dL</td><td style="font-size:11px;color:var(--ink3)">0.30以下</td><td><span class="pill pill-ok">炎症なし</span></td></tr>
+          <tr><td>25-OHビタミンD</td><td class="td-val">87.2 ng/mL</td><td style="font-size:11px;color:var(--ink3)">60-100</td><td><span class="pill pill-ok">至適域</span></td></tr>
+          <tr><td>フェリチン</td><td class="td-val">161 ng/mL</td><td style="font-size:11px;color:var(--ink3)">9-275</td><td><span class="pill pill-ok">良好</span></td></tr>
+          <tr><td>尿酸</td><td class="td-warn">3.7 mg/dL</td><td style="font-size:11px;color:var(--ink3)">3.8-7.0</td><td><span class="pill pill-gold">やや低め</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="pad bg-w">
+    <p class="eyebrow">ミネラル検査（毛髪）</p>
+    <h2>不足・過剰ミネラル</h2>
+    <div class="data-table-wrap">
+      <table>
+        <thead><tr><th>ミネラル</th><th>値</th><th>基準値</th><th>判定</th></tr></thead>
+        <tbody>
+          <tr><td>マグネシウム Mg</td><td class="td-red">24.1</td><td style="font-size:11px;color:var(--ink3)">29-76</td><td><span class="pill pill-red">不足 ⚠</span></td></tr>
+          <tr><td>亜鉛 Zn</td><td class="td-warn">118.1</td><td style="font-size:11px;color:var(--ink3)">125-155</td><td><span class="pill pill-gold">やや不足</span></td></tr>
+          <tr><td>クロム Cr</td><td class="td-warn">0.68</td><td style="font-size:11px;color:var(--ink3)">0.82-1.54</td><td><span class="pill pill-gold">不足</span></td></tr>
+          <tr><td>ヨウ素 I</td><td class="td-warn">0.30</td><td style="font-size:11px;color:var(--ink3)">0.32-0.59</td><td><span class="pill pill-gold">やや不足</span></td></tr>
+          <tr><td>酸化ストレス</td><td class="td-ok">34%</td><td style="font-size:11px;color:var(--ink3)">低いほど良</td><td><span class="pill pill-ok">良好</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="insight red">
+      <strong>優先対策：</strong>マグネシウムが最も不足しています。グリシン酸マグネシウム200-400mg/日を就寝前に補充することで、HRV改善・回復速度向上・睡眠深化が期待できます。
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="pad bg-bg">
+    <p class="eyebrow">CGM 持続血糖測定</p>
+    <h2>血糖コントロール</h2>
+
+    <div class="metric-grid">
+      <div class="metric-card">
+        <div class="metric-label">平均グルコース</div>
+        <div class="metric-val">103<span>mg/dL</span></div>
+        <div class="metric-change pos">目標 ≦154</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">GMI（推定HbA1c）</div>
+        <div class="metric-val">5.8<span>%</span></div>
+        <div class="metric-change pos">目標 ≦7.0%</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">目標範囲内時間</div>
+        <div class="metric-val">100<span>%</span></div>
+        <div class="metric-change pos">目標 >70%　完璧</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">変動係数（%CV）</div>
+        <div class="metric-val">14<span>%</span></div>
+        <div class="metric-change pos">目標 ≦36%　安定</div>
+      </div>
+    </div>
+
+    <div class="insight">
+      血糖管理は全指標で優秀な水準を維持。食後血糖スパイクも6ヶ月を通じてほぼゼロ。玄米・オートミール・MCTオイルを活用した食事管理が機能しています。
+    </div>
+  </div>
+
+</div>
+
+<!-- ══════════════════════════════════
+     PANEL 4: FOOD ANALYSIS
+══════════════════════════════════ -->
+<div class="panel" id="panel-food">
+
+  <div class="pad bg-bg">
+    <p class="eyebrow">食事記録アルバム解析</p>
+    <h2>食事パターンの全体像</h2>
+    <p class="lead">8weeks 食事アルバムの写真から、期間・傾向・栄養バランスを分析しました。</p>
+
+    <!-- 期間別スコアカード -->
+    <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:20px">
+
+      <div style="background:var(--white);border:1px solid var(--border);border-radius:10px;border-left:4px solid var(--teal);padding:14px 16px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+          <div style="font-size:12px;font-weight:700;color:var(--teal);letter-spacing:.5px">期間 A ／ 東南アジア滞在</div>
+          <span class="pill pill-ok">スコア 85/100</span>
+        </div>
+        <div style="font-size:13px;color:var(--ink);font-weight:500;margin-bottom:4px">フォー・ラクサ・タイ料理中心</div>
+        <p class="sm" style="margin:0">葉物野菜・香草・魚介類が豊富。グルテンフリー傾向。スープ系で消化負担も少なく、<strong>最も栄養バランスが整った時期</strong>。</p>
+      </div>
+
+      <div style="background:var(--white);border:1px solid var(--border);border-radius:10px;border-left:4px solid var(--gold);padding:14px 16px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+          <div style="font-size:12px;font-weight:700;color:var(--gold);letter-spacing:.5px">期間 B ／ 牛肉集中期</div>
+          <span class="pill pill-gold">スコア 62/100</span>
+        </div>
+        <div style="font-size:13px;color:var(--ink);font-weight:500;margin-bottom:4px">ステーキ・焼肉が連続</div>
+        <p class="sm" style="margin:0">タンパク質は十分だが野菜が少なく、<strong>高ヒスタミン食が続いた時期</strong>。熟成肉は特にヒスタミンが高い。腸内環境への負荷に注意。</p>
+      </div>
+
+      <div style="background:var(--white);border:1px solid var(--border);border-radius:10px;border-left:4px solid var(--red);padding:14px 16px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+          <div style="font-size:12px;font-weight:700;color:var(--red);letter-spacing:.5px">期間 C ／ ヨーロッパ滞在</div>
+          <span class="pill pill-red">スコア 48/100</span>
+        </div>
+        <div style="font-size:13px;color:var(--ink);font-weight:500;margin-bottom:4px">ピンチョス・タパス・ピザ・ジェラート</div>
+        <p class="sm" style="margin:0">小麦・乳製品・糖質が大幅増加。ジェラートが複数回登場。<strong>血糖スパイクのリスクが最も高い時期</strong>。旅行の性質上、やむを得ない面もあるが記録として重要。</p>
+      </div>
+
+      <div style="background:var(--white);border:1px solid var(--border);border-radius:10px;border-left:4px solid var(--teal);padding:14px 16px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+          <div style="font-size:12px;font-weight:700;color:var(--teal);letter-spacing:.5px">期間 D ／ 日本食・現在</div>
+          <span class="pill pill-ok">スコア 80/100</span>
+        </div>
+        <div style="font-size:13px;color:var(--ink);font-weight:500;margin-bottom:4px">焼き鳥定食・魚・玄米・納豆</div>
+        <p class="sm" style="margin:0">発酵食品（納豆）・青魚（サバ・サーモン）・雑穀米。clrプロテインバーも活用。<strong>現在の食習慣は安定して良好</strong>。緑スムージーも確認。</p>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="pad bg-w">
+    <p class="eyebrow">栄養素別スコア</p>
+    <h2>写真から見る栄養バランス</h2>
+
+    <div style="margin-bottom:20px">
+      <div class="prog-row">
+        <div class="prog-label"><span class="prog-name">タンパク質</span><span class="prog-val">魚・鶏・牛赤身　◎</span></div>
+        <div class="prog-track"><div class="prog-fill" style="width:88%"></div></div>
+      </div>
+      <div class="prog-row">
+        <div class="prog-label"><span class="prog-name">オメガ3（EPA/DHA）</span><span class="prog-val">青魚・サーモン頻繁　◎</span></div>
+        <div class="prog-track"><div class="prog-fill" style="width:82%"></div></div>
+      </div>
+      <div class="prog-row">
+        <div class="prog-label"><span class="prog-name">葉物野菜・食物繊維</span><span class="prog-val">アジア期は◎、欧州期は△</span></div>
+        <div class="prog-track"><div class="prog-fill" style="width:70%"></div></div>
+      </div>
+      <div class="prog-row">
+        <div class="prog-label"><span class="prog-name">発酵食品</span><span class="prog-val">納豆・キムチ確認　○</span></div>
+        <div class="prog-track"><div class="prog-fill" style="width:65%"></div></div>
+      </div>
+      <div class="prog-row">
+        <div class="prog-label"><span class="prog-name">糖質コントロール</span><span class="prog-val">旅行中に乱れあり　△</span></div>
+        <div class="prog-track"><div class="prog-fill gold" style="width:58%"></div></div>
+      </div>
+      <div class="prog-row">
+        <div class="prog-label"><span class="prog-name">ヒスタミン管理</span><span class="prog-val">牛肉期・発酵食品に注意　△</span></div>
+        <div class="prog-track"><div class="prog-fill gold" style="width:50%"></div></div>
+      </div>
+      <div class="prog-row">
+        <div class="prog-label"><span class="prog-name">グルテン回避</span><span class="prog-val">欧州期に増加　△</span></div>
+        <div class="prog-track"><div class="prog-fill red" style="width:45%"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="pad bg-bg">
+    <p class="eyebrow">注目ポイント</p>
+    <h2>写真から読み取れた傾向</h2>
+
+    <div class="insight">
+      <strong>良い習慣：</strong>clrプロテインバーを間食に活用、緑スムージーで微量栄養素補給、大戸屋系の定食で主菜・副菜バランスを意識。日本食ベースに戻ると食事の質が安定する。
+    </div>
+    <div class="insight gold">
+      <strong>ヒスタミン観点：</strong>写真に納豆・サーモン・熟成牛肉・クルミが頻繁に登場。これらはすべて高ヒスタミン食品。DAO遺伝子多型があると、これらが蓄積して慢性炎症・睡眠乱れ・鼻炎の引き金になる可能性がある。
+    </div>
+    <div class="insight red">
+      <strong>旅行中の血糖管理：</strong>ヨーロッパ滞在期にジェラート・ピザ・パンが集中。このタイミングでVO2 maxや体重に変化があった可能性。次回の旅行時は食後ウォーキングを意識することで血糖スパイクを軽減できる。
+    </div>
+
+    <!-- 食材出現頻度 -->
+    <div style="margin-top:20px">
+      <div style="font-size:13px;font-weight:700;color:var(--ink);margin-bottom:12px">よく登場した食材</div>
+      <div style="display:flex;flex-wrap:wrap;gap:7px">
+        <span class="pill pill-ok">サーモン・サバ　多</span>
+        <span class="pill pill-ok">鶏肉（焼き鳥）　多</span>
+        <span class="pill pill-ok">葉物野菜　多</span>
+        <span class="pill pill-ok">玄米・雑穀米　多</span>
+        <span class="pill pill-ok">納豆　○</span>
+        <span class="pill pill-gold">牛ステーキ　一時集中</span>
+        <span class="pill pill-gold">白米　△</span>
+        <span class="pill pill-red">ピザ・パン　旅行期</span>
+        <span class="pill pill-red">ジェラート　旅行期</span>
+        <span class="pill pill-gray">clrバー　補食</span>
+        <span class="pill pill-gray">緑スムージー　○</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="pad bg-w">
+    <p class="eyebrow">食事からの改善提案</p>
+    <h2>次の一手</h2>
+    <ul class="clist">
+      <li>牛肉を週2回以下に抑え、鶏・魚中心へ</li>
+      <li>旅行中は食後に10分ウォーキングを習慣化</li>
+      <li>納豆・発酵食品は1日1回に絞る（ヒスタミン対策）</li>
+      <li>緑スムージーにマグネシウム豊富な食材（ほうれん草）を追加</li>
+      <li>間食はclrバーをキープ。ナッツ過多に注意</li>
+    </ul>
+  </div>
+
+</div>
+
+<!-- ══════════════════════════════════
+     PANEL 5: ADVICE
+══════════════════════════════════ -->
+<div class="panel" id="panel-advice">
+
+  <div class="pad bg-bg">
+    <p class="eyebrow">優先アクション</p>
+    <h2>今すぐ取り組むべきこと</h2>
+
+    <div>
+      <div class="adv-item">
+        <div class="adv-priority p1">PRIORITY 01 ／ 最高</div>
+        <div class="adv-title">Mgサプリを開始する</div>
+        <p class="adv-body">毛髪検査でマグネシウムが明確に不足（24.1、基準29-76）。就寝前にグリシン酸マグネシウム200-400mg/日。HRV改善・回復速度向上・睡眠深化が期待できる。</p>
+      </div>
+      <div class="adv-item">
+        <div class="adv-priority p1">PRIORITY 02 ／ 最高</div>
+        <div class="adv-title">サイクリングを週2回以上維持する</div>
+        <p class="adv-body">6月にサイクリング月8回でVO2 max 43.85を達成。7月に41.7まで低下。この有酸素刺激がVO2 max向上に直結。目標45に向けて継続が必須。</p>
+      </div>
+      <div class="adv-item">
+        <div class="adv-priority p2">PRIORITY 03 ／ 高</div>
+        <div class="adv-title">月1回「回復週」を意図的に設ける</div>
+        <p class="adv-body">4月にHRV低下・RHR上昇が発生。3月の過負荷の蓄積が原因。毎月第4週は筋トレ強度50%減・ウォーキングのみにする。</p>
+      </div>
+      <div class="adv-item">
+        <div class="adv-priority p2">PRIORITY 04 ／ 高</div>
+        <div class="adv-title">Zone2ウォーキングを週150分</div>
+        <p class="adv-body">最大心拍の60-70%（41歳の場合、心拍数83-97bpm目安）の「会話できる速さ」を週5日×30分を目標に。ミトコンドリアへの最高の投資。</p>
+      </div>
+      <div class="adv-item">
+        <div class="adv-priority">PRIORITY 05 ／ 中</div>
+        <div class="adv-title">牡蠣・海藻類の摂取頻度を増やす</div>
+        <p class="adv-body">亜鉛・ヨウ素不足を食事から補う。牡蠣は週1回、わかめ・昆布を週2-3回食事に取り入れる。サプリより食事から補給を優先。</p>
+      </div>
+      <div class="adv-item">
+        <div class="adv-priority">PRIORITY 06 ／ 中</div>
+        <div class="adv-title">ヒスタミン除去1ヶ月実験</div>
+        <p class="adv-body">花粉シーズン前（秋推奨）に納豆・サバ缶・ナッツを1ヶ月除去。再導入時の体感変化でDAO遺伝子多型の影響を確認する。</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="pad bg-w">
+    <p class="eyebrow">目標設定</p>
+    <h2>今後6ヶ月の数値目標</h2>
+    <div id="goal-rows"></div>
+
+    <div class="insight" style="margin-top:20px">
+      <strong>コーチより：</strong>6ヶ月間のデータが示すのは「正しい方向性で継続できている」という事実です。マグネシウム補充とサイクリング継続という2つのアクションだけで、次の3ヶ月でさらに質の高いステージへ進めます。
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="pad bg-bg">
+    <p class="eyebrow">このレポートで得られること</p>
+    <h2>health.meが毎月お届けするもの</h2>
+    <ul class="clist">
+      <li>血液・栄養データの解析と可視化</li>
+      <li>Apple Healthデータのトレンド分析</li>
+      <li>あなた専用の改善アクションプラン</li>
+      <li>次月に向けた数値目標の設定</li>
+    </ul>
+  </div>
+
+</div>
+
+<!-- FOOTER NOTE -->
+<div class="foot-note">
+  ※本資料はサンプルです。個人情報は匿名化処理を行っています。<br>
+  ※本レポートは医療行為ではありません。診断・治療・処方を行うものではありません。
+</div>
+
+<script>
+/* ── TAB SWITCH ── */
+function sw(id, btn) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
+  document.getElementById('panel-' + id).classList.add('active');
+  btn.classList.add('active');
+  if (id === 'trend')   renderCharts();
+  if (id === 'summary') renderProgress();
+  if (id === 'advice')  renderGoals();
+  if (id === 'food')    renderFoodBars();
+}
+
+/* ── PROGRESS BARS ── */
+function renderProgress() {
+  const el = document.getElementById('progress-bars');
+  if (el.innerHTML) return;
+  const items = [
+    { name: '血糖コントロール', pct: 100, color: 'teal', label: '100点／100' },
+    { name: '心肺機能（VO2 max）', pct: 72,  color: 'teal', label: '43.9 ／目標45' },
+    { name: '体組成', pct: 85, color: 'teal', label: '体脂肪10.8%' },
+    { name: 'ミネラルバランス', pct: 55, color: 'red',  label: 'Mg・Zn不足あり' },
+    { name: '自律神経（HRV）', pct: 74, color: 'teal', label: '59ms ／目標65ms' },
+    { name: '炎症・老化指標', pct: 90, color: 'teal', label: 'CRP 0.21 良好' },
+  ];
+  el.innerHTML = items.map(item => `
+    <div class="prog-row">
+      <div class="prog-label">
+        <span class="prog-name">${item.name}</span>
+        <span class="prog-val">${item.label}</span>
+      </div>
+      <div class="prog-track">
+        <div class="prog-fill ${item.color === 'red' ? 'red' : ''}"
+             style="width:0%" data-w="${item.pct}%"></div>
+      </div>
+    </div>
+  `).join('');
+  requestAnimationFrame(() => {
+    setTimeout(() => {
+      el.querySelectorAll('.prog-fill').forEach(f => f.style.width = f.dataset.w);
+    }, 80);
+  });
+}
+
+/* ── GOAL ROWS ── */
+function renderGoals() {
+  const el = document.getElementById('goal-rows');
+  if (el.innerHTML) return;
+  const goals = [
+    { name: 'VO2 max', now: 41.7, t3: 43, t6: 45, max: 50, unit: '' },
+    { name: '体重', now: 58.6, t3: 58.3, t6: 57.5, max: 65, unit: 'kg' },
+    { name: '安静時心拍', now: 58.4, t3: 57, t6: 55, max: 70, unit: 'bpm', invert: true },
+    { name: 'HRV', now: 59.3, t3: 62, t6: 65, max: 80, unit: 'ms' },
+  ];
+  el.innerHTML = goals.map(g => {
+    const pNow = (g.now / g.max * 100).toFixed(1);
+    const p3   = (g.t3  / g.max * 100).toFixed(1);
+    const p6   = (g.t6  / g.max * 100).toFixed(1);
+    return `
+      <div class="goal-row">
+        <div class="goal-name">${g.name}</div>
+        <div class="goal-bars">
+          <div class="goal-bar-wrap">
+            <div class="goal-bar-6m" style="width:${p6}%"></div>
+            <div class="goal-bar-3m" style="width:${p3}%"></div>
+            <div class="goal-bar-now" style="width:${pNow}%"></div>
+          </div>
+          <div class="goal-legend">
+            <span><i class="dot-now"></i>現在 ${g.now}${g.unit}</span>
+            <span><i class="dot-3m"></i>3ヶ月 ${g.t3}${g.unit}</span>
+            <span><i class="dot-6m"></i>6ヶ月 ${g.t6}${g.unit}</span>
+          </div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+/* ── SVG LINE CHARTS ── */
+let chartsDrawn = false;
+function renderCharts() {
+  if (chartsDrawn) return;
+  chartsDrawn = true;
+  drawLine('vo2-svg', [
+    {d:'1/24',v:40.5},{d:'1/30',v:39.8},{d:'2/8',v:40.2},{d:'2/28',v:42.0},
+    {d:'3/1',v:42.1},{d:'3/14',v:41.8},{d:'3/31',v:41.0},{d:'4/5',v:41.4},
+    {d:'4/26',v:41.5},{d:'5/7',v:42.1},{d:'5/16',v:42.0},{d:'5/26',v:42.0},
+    {d:'6/1',v:42.2},{d:'6/7',v:42.4},{d:'6/16',v:43.8},{d:'6/17',v:43.9},
+    {d:'6/27',v:42.2},{d:'7/4',v:42.0},{d:'7/17',v:41.1},{d:'7/26',v:42.5},{d:'7/30',v:41.8}
+  ], {
+    min:38, max:46, W:640, H:180,
+    stroke:'#2c7a6f', fill:'rgba(44,122,111,0.08)',
+    goalY: 45, goalStroke:'rgba(200,146,58,0.5)',
+    peaks:[{d:'6/17',v:43.9}]
+  });
+  drawLine('wt-svg', [
+    {d:'1/22',v:61.9},{d:'1/28',v:62.5},{d:'2/3',v:61.4},{d:'2/22',v:61.5},
+    {d:'2/28',v:61.1},{d:'3/10',v:61.1},{d:'3/17',v:60.2},{d:'3/31',v:60.0},
+    {d:'4/5',v:59.7},{d:'4/11',v:58.6},{d:'4/18',v:59.7},
+    {d:'5/7',v:58.0},{d:'5/12',v:58.5},{d:'5/31',v:60.2},
+    {d:'6/1',v:59.3},{d:'6/10',v:58.4},{d:'6/19',v:59.3},
+    {d:'7/10',v:57.0},{d:'7/17',v:57.8},{d:'7/25',v:59.8},{d:'7/31',v:58.8}
+  ], { min:55, max:65, W:640, H:160, stroke:'#2c7a6f', fill:'rgba(44,122,111,0.07)' });
+}
+
+function drawLine(id, data, opts) {
+  const svg = document.getElementById(id);
+  if (!svg) return;
+  const { min, max, W, H, stroke, fill, goalY, goalStroke, peaks=[] } = opts;
+  const pl=44, pr=16, pt=18, pb=32;
+  const iW = W-pl-pr, iH = H-pt-pb;
+  const x = i => pl + (i/(data.length-1))*iW;
+  const y = v => pt + iH - ((v-min)/(max-min))*iH;
+
+  // grid
+  let g = '';
+  for (let i=0; i<=4; i++) {
+    const v = min + (max-min)*i/4;
+    const yy = y(v);
+    g += `<line x1="${pl}" x2="${W-pr}" y1="${yy}" y2="${yy}" stroke="#e0dbd2" stroke-width="1"/>`;
+    g += `<text x="${pl-6}" y="${yy+4}" text-anchor="end" fill="#909090" font-size="9" font-family="sans-serif">${v.toFixed(0)}</text>`;
+  }
+
+  // goal line
+  let gl = '';
+  if (goalY) {
+    const gy = y(goalY);
+    gl = `<line x1="${pl}" x2="${W-pr}" y1="${gy}" y2="${gy}" stroke="${goalStroke}" stroke-width="1.2" stroke-dasharray="5,4"/>
+    <text x="${W-pr+4}" y="${gy+4}" fill="${goalStroke}" font-size="9" font-family="sans-serif">${goalY}</text>`;
+  }
+
+  // area + line
+  const coords = data.map((d,i)=>`${x(i)},${y(d.v)}`).join(' ');
+  const area = `M ${coords} L ${x(data.length-1)},${pt+iH} ${x(0)},${pt+iH} Z`;
+  const line = `M ${coords}`;
+
+  // labels
+  let lbl = '';
+  data.forEach((d,i) => {
+    if (i % 4 === 0 || i === data.length-1) {
+      lbl += `<text x="${x(i)}" y="${H-4}" text-anchor="middle" fill="#909090" font-size="9" font-family="sans-serif">${d.d}</text>`;
+    }
+  });
+
+  // dots
+  const dots = data.map((d,i)=>
+    `<circle cx="${x(i)}" cy="${y(d.v)}" r="2.5" fill="${stroke}" opacity="0.6"/>`
+  ).join('');
+
+  // peaks
+  let pk = '';
+  peaks.forEach(p => {
+    const idx = data.findIndex(d=>d.d===p.d);
+    if(idx<0) return;
+    const px=x(idx), py=y(p.v);
+    pk += `<circle cx="${px}" cy="${py}" r="5" fill="${stroke}" stroke="white" stroke-width="2"/>
+    <text x="${px}" y="${py-10}" text-anchor="middle" fill="${stroke}" font-size="9" font-family="sans-serif" font-weight="700">★${p.v}</text>`;
+  });
+
+  svg.innerHTML = `
+    <defs>
+      <linearGradient id="grad_${id}" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="${stroke}" stop-opacity="0.25"/>
+        <stop offset="100%" stop-color="${stroke}" stop-opacity="0.01"/>
+      </linearGradient>
+    </defs>
+    ${g}${gl}
+    <path d="${area}" fill="url(#grad_${id})"/>
+    <path d="${line}" fill="none" stroke="${stroke}" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+    ${dots}${pk}${lbl}
+  `;
+}
+
+/* ── FOOD BARS (アニメーション初期化) ── */
+function renderFoodBars() {
+  // prog-fillで width:0から始まっているものをアニメーション
+  const fills = document.querySelectorAll('#panel-food .prog-fill');
+  fills.forEach(f => {
+    const target = f.style.width;
+    f.style.transition = 'none';
+    f.style.width = '0%';
+    requestAnimationFrame(() => {
+      setTimeout(() => {
+        f.style.transition = 'width 1s cubic-bezier(.34,1.56,.64,1)';
+        f.style.width = target;
+      }, 80);
+    });
+  });
+}
+
+/* ── INIT ── */
+document.addEventListener('DOMContentLoaded', () => {
+  renderProgress();
+});
+</script>
+</body>
+</html>
